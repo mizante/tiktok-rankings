@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out; /* Velocidade do Fade (0.5 segundos) */
+            pointer-events: none;
+        }
+        .ativo { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body>
+    <!-- Cole o Link de PRESENTES entre as aspas abaixo -->
+    <iframe id="linkA" class="ativo" src="https://tikcontrol.live/widgets/top-donors.html?uid=H2rEq4ZgENQwWDg0Smrzw1IMaTi1"></iframe>
+    
+    <!-- Cole o Link de CURTIDAS entre as aspas abaixo -->
+    <iframe id="linkB" src="https://tikcontrol.live/widgets/top-likes.html?uid=H2rEq4ZgENQwWDg0Smrzw1IMaTi1"></iframe>
+
+    <script>
+        const tempoPresentes = 5000; // Tempo na tela: 5 segundos
+        const tempoCurtidas = 8000;  // Tempo na tela: 8 segundos
+
+        const frameA = document.getElementById('linkA');
+        const frameB = document.getElementById('linkB');
+
+        function alternarRankings() {
+            // Se o ranking de Presentes (frameA) está ativo, muda para Curtidas
+            if (frameA.classList.contains('ativo')) {
+                frameA.classList.remove('ativo');
+                frameB.classList.add('ativo');
+                // Agenda a próxima troca baseado no tempo das Curtidas
+                setTimeout(alternarRankings, tempoCurtidas);
+            } else {
+                // Se o ranking de Curtidas (frameB) está ativo, muda para Presentes
+                frameB.classList.remove('ativo');
+                frameA.classList.add('ativo');
+                // Agenda a próxima troca baseado no tempo dos Presentes
+                setTimeout(alternarRankings, tempoPresentes);
+            }
+        }
+
+        // Inicia o ciclo agendando a primeira troca após o tempo dos Presentes
+        setTimeout(alternarRankings, tempoPresentes);
+    </script>
+</body>
+</html>
