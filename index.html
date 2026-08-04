@@ -2,47 +2,64 @@
 <html>
 <head>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background: transparent; 
+        }
+        
+        .overlay-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
         iframe { 
             width: 100%; 
             height: 100%; 
             border: none; 
             position: absolute; 
             top: 0; 
-            left: 0; 
-            opacity: 0; 
-            transition: opacity 0.5s ease-in-out;
+            left: -9999px; /* Mantém o iframe carregado e ativo, mas fora da visão */
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
             pointer-events: none;
         }
-        .ativo { opacity: 1; pointer-events: auto; }
+
+        /* Quando ativo, volta para a tela e exibe com fade suave */
+        iframe.ativo { 
+            left: 0; 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
     </style>
 </head>
 <body>
-    <iframe id="linkA" class="ativo" src="https://tikcontrol.live/widgets/top-donors.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
-    <iframe id="linkB" src="https://tikcontrol.live/widgets/top-likes.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
+    <div class="overlay-container">
+        <!-- Cole o Link de PRESENTES entre as aspas abaixo -->
+        <iframe id="linkA" class="ativo" src="https://tikcontrol.live/widgets/top-donors.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
+        
+        <!-- Cole o Link de CURTIDAS entre as aspas abaixo -->
+        <iframe id="linkB" src="https://tikcontrol.live/widgets/top-likes.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
+    </div>
 
     <script>
-        const tempoPresentes = 5000;
-        const tempoCurtidas = 8000; 
+        const tempoPresentes = 5000; // Tempo na tela: 5 segundos
+        const tempoCurtidas = 8000;  // Tempo na tela: 8 segundos
 
         const frameA = document.getElementById('linkA');
         const frameB = document.getElementById('linkB');
 
-        function atualizarFrame(frame) {
-            // Recarrega o src para forçar o widget a reestabelecer a conexão e buscar dados
-            const srcAtual = frame.src;
-            frame.src = srcAtual;
-        }
-
         function alternarRankings() {
             if (frameA.classList.contains('ativo')) {
                 frameA.classList.remove('ativo');
-                atualizarFrame(frameB); // Força atualização antes de exibir
                 frameB.classList.add('ativo');
                 setTimeout(alternarRankings, tempoCurtidas);
             } else {
                 frameB.classList.remove('ativo');
-                atualizarFrame(frameA); // Força atualização antes de exibir
                 frameA.classList.add('ativo');
                 setTimeout(alternarRankings, tempoPresentes);
             }
