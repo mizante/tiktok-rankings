@@ -11,43 +11,43 @@
             top: 0; 
             left: 0; 
             opacity: 0; 
-            transition: opacity 0.5s ease-in-out; /* Velocidade do Fade (0.5 segundos) */
+            transition: opacity 0.5s ease-in-out;
             pointer-events: none;
         }
         .ativo { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body>
-    <!-- Cole o Link de PRESENTES entre as aspas abaixo -->
     <iframe id="linkA" class="ativo" src="https://tikcontrol.live/widgets/top-donors.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
-    
-    <!-- Cole o Link de CURTIDAS entre as aspas abaixo -->
     <iframe id="linkB" src="https://tikcontrol.live/widgets/top-likes.html?uid=NgvZGfp7Z5P4vZaEPbyImt7djrE3"></iframe>
 
     <script>
-        const tempoPresentes = 5000; // Tempo na tela: 5 segundos
-        const tempoCurtidas = 8000;  // Tempo na tela: 8 segundos
+        const tempoPresentes = 5000;
+        const tempoCurtidas = 8000; 
 
         const frameA = document.getElementById('linkA');
         const frameB = document.getElementById('linkB');
 
+        function atualizarFrame(frame) {
+            // Recarrega o src para forçar o widget a reestabelecer a conexão e buscar dados
+            const srcAtual = frame.src;
+            frame.src = srcAtual;
+        }
+
         function alternarRankings() {
-            // Se o ranking de Presentes (frameA) está ativo, muda para Curtidas
             if (frameA.classList.contains('ativo')) {
                 frameA.classList.remove('ativo');
+                atualizarFrame(frameB); // Força atualização antes de exibir
                 frameB.classList.add('ativo');
-                // Agenda a próxima troca baseado no tempo das Curtidas
                 setTimeout(alternarRankings, tempoCurtidas);
             } else {
-                // Se o ranking de Curtidas (frameB) está ativo, muda para Presentes
                 frameB.classList.remove('ativo');
+                atualizarFrame(frameA); // Força atualização antes de exibir
                 frameA.classList.add('ativo');
-                // Agenda a próxima troca baseado no tempo dos Presentes
                 setTimeout(alternarRankings, tempoPresentes);
             }
         }
 
-        // Inicia o ciclo agendando a primeira troca após o tempo dos Presentes
         setTimeout(alternarRankings, tempoPresentes);
     </script>
 </body>
