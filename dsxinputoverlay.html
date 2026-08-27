@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSX Overlay Bridge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: transparent !important;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Puxa a overlay do seu DSX local para dentro do GitHub seguro -->
+    <iframe id="dsxOverlay" src="http://127.0.0" allow="autoplay"></iframe>
+
+    <script>
+        const iframe = document.getElementById('dsxOverlay');
+        
+        // ESTRATÉGIA ANTICONCELAMENTO:
+        // Força o navegador interno do TikTok a manter a thread do iframe ativa e prioritária,
+        // simulando atividade constante mesmo se o TikTok tentar congelar abas secundárias.
+        function preventTikTokFreeze() {
+            if (iframe && iframe.contentWindow) {
+                // Dispara uma mensagem leve vazia para o iframe para forçar o canal de comunicação ativo
+                iframe.contentWindow.postMessage('ping', '*');
+            }
+            // Executa no ciclo de renderização mais rápido do processador gráfico (GPU)
+            requestAnimationFrame(preventTikTokFreeze);
+        }
+
+        // Inicia o ciclo de prioridade assim que a página carrega
+        window.addEventListener('load', () => {
+            preventTikTokFreeze();
+        });
+
+        // Backup de segurança: Se o requestAnimationFrame for pausado pelo TikTok por inatividade,
+        // um Web Worker ou um Intervalo pesado força o recarregamento dos frames a cada 1 segundo.
+        setInterval(() => {
+            if (iframe) {
+                // Altera levemente uma propriedade invisível para forçar o TikTok a re-renderizar a área
+                iframe.style.opacity = iframe.style.opacity === "0.999" ? "1" : "0.999";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
