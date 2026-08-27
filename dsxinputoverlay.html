@@ -1,51 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Força o navegador do TikTok a permitir requisições de mídia locais mesmo estando em um site público HTTPS -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>DSX TikTok Bridge</title>
+    <title>DSX Bridge</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; background: transparent !important; overflow: hidden; }
-        #dsxControl { width: 100%; height: 100%; border: none; background: transparent !important; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }
     </style>
 </head>
 <body>
-
-    <!-- Renderizador dinâmico -->
-    <div id="container" style="width:100%; height:100%;"></div>
-
     <script>
-        // Criação do elemento de forma dinâmica via JS para burlar a varredura estática de segurança do TikTok
-        const container = document.getElementById('container');
-        const iframe = document.createElement('iframe');
-        
-        iframe.id = "dsxControl";
-        // Forçamos o carregamento via IP clássico, interpretado localmente pelo seu motor de renderização
-        iframe.src = "http://127.0.0";
-        iframe.setAttribute("frameborder", "0");
-        iframe.setAttribute("scrolling", "no");
-        
-        container.appendChild(iframe);
-
-        // MECANISMO DE MANUTENÇÃO ATIVA (Anti-congelamento remoto)
-        function keepAlive() {
-            if (iframe && iframe.contentWindow) {
-                // Envia pulsações constantes para o motor Chromium do TikTok não suspender o processo
-                iframe.contentWindow.postMessage('heartbeat', '*');
-            }
-            // Força re-renderização na GPU a cada frame de atualização do monitor
-            requestAnimationFrame(keepAlive);
-        }
-
-        // Backup visual para evitar hibernação por inatividade de tela
-        setInterval(() => {
-            iframe.style.transform = iframe.style.transform === "scale(1)" ? "scale(0.999)" : "scale(1)";
-        }, 500);
-
-        window.addEventListener('load', keepAlive);
+        // PEGA O SEU IP LOCAL E REDIRECIONA O TIKTOK INSTANTANEAMENTE
+        // Substitua o 192.168.1.15 pelo SEU endereço IPv4 obtido no ipconfig
+        window.location.replace("http://127.0.0.1:8989/controller-overlay/b3ea076e0f10");
     </script>
 </body>
 </html>
